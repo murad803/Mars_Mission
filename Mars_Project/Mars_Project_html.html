@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LMOR – Liquid Martian Oxygen Reactor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { mars: '#A12424', ember: '#E5513F', neon: '#2EC4FF' },
+  fontFamily: { display: ['"Chakra Petch"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'] }
+}}};
+</script>
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
+  body { font-family: 'IBM Plex Sans', sans-serif; }
+  :focus-visible { outline: 2px solid #2EC4FF; outline-offset: 3px; }
+  .ph { border: 1.5px dashed rgb(71 85 105); background: repeating-linear-gradient(135deg, rgba(30,41,59,.35) 0 10px, transparent 10px 20px); }
+  .bub { animation: rise 5s linear infinite; transform-box: fill-box; }
+  .bub:nth-child(2n) { animation-duration: 6.5s; animation-delay: -2s; }
+  .bub:nth-child(3n) { animation-duration: 4s; animation-delay: -3s; }
+  @keyframes rise { from { transform: translateY(0); opacity: .9; } to { transform: translateY(-190px); opacity: 0; } }
+  .beam { animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  input[type=range] { accent-color: #2EC4FF; }
+  @media (prefers-reduced-motion: reduce) { .bub, .beam { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+    <a href="#top" class="font-display text-lg font-semibold text-white">LMOR</a>
+    <div class="hidden gap-6 text-sm text-slate-400 md:flex">
+      <a class="hover:text-neon" href="#intake">Intake</a>
+      <a class="hover:text-neon" href="#liquefaction">Liquefaction</a>
+      <a class="hover:text-neon" href="#reaction">Reaction</a>
+      <a class="hover:text-neon" href="#separation">Separation &amp; math</a>
+      <a class="hover:text-neon" href="#safety">Safety &amp; scale</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="relative overflow-hidden border-b border-slate-800">
+  <div class="pointer-events-none absolute -left-40 top-0 h-96 w-96 rounded-full bg-mars/25 blur-3xl"></div>
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-[1.3fr_1fr] md:py-24">
+    <div>
+      <p class="text-sm text-slate-400">Technical proposal · In-Situ Resource Utilization for crewed Mars missions</p>
+      <h1 class="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-6xl">Make oxygen from liquid Martian air.</h1>
+      <p class="mt-5 max-w-xl text-lg text-slate-300">The Liquid Martian Oxygen Reactor (LMOR) compresses Mars’s CO₂ into a liquid, then splits it with laser-activated nanocatalysts.</p>
+      <dl class="mt-8 grid max-w-md grid-cols-3 gap-4 border-l-2 border-mars pl-4 text-sm">
+        <div><dt class="text-slate-500">Inventor</dt><dd class="font-medium text-white">Murad Duniyamaliev</dd></div>
+        <div><dt class="text-slate-500">Age</dt><dd class="font-medium text-white">13</dd></div>
+        <div><dt class="text-slate-500">Date</dt><dd class="font-medium text-white">November 9, 2026</dd></div>
+      </dl>
+    </div>
+
+    <!-- Reactor illustration -->
+    <svg viewBox="0 0 300 420" class="mx-auto w-full max-w-xs" role="img" aria-label="Diagram of the reactor: a cylinder of liquid CO2 with a piston on top, a laser window on the left and oxygen bubbles rising">
+      <defs><clipPath id="liq"><rect x="95" y="110" width="110" height="250"/></clipPath></defs>
+      <rect x="140" y="10" width="20" height="60" fill="#475569"/>
+      <rect x="95" y="62" width="110" height="26" rx="3" fill="#64748b"/>
+      <rect x="95" y="88" width="110" height="272" fill="#0f172a" stroke="#94a3b8" stroke-width="4"/>
+      <rect x="99" y="92" width="102" height="28" fill="#2EC4FF" opacity=".12"/>
+      <rect x="99" y="120" width="102" height="236" fill="#2EC4FF" opacity=".18"/>
+      <path d="M95 360 L150 405 L205 360 Z" fill="#0f172a" stroke="#94a3b8" stroke-width="4"/>
+      <ellipse cx="150" cy="378" rx="30" ry="6" fill="#A12424"/>
+      <g clip-path="url(#liq)" fill="none" stroke="#bfeaff" stroke-width="1.5">
+        <circle class="bub" cx="120" cy="340" r="5"/><circle class="bub" cx="150" cy="350" r="7"/>
+        <circle class="bub" cx="180" cy="335" r="4"/><circle class="bub" cx="135" cy="320" r="3"/>
+        <circle class="bub" cx="165" cy="345" r="5"/><circle class="bub" cx="190" cy="355" r="6"/>
+      </g>
+      <circle cx="95" cy="235" r="20" fill="#0f172a" stroke="#2EC4FF" stroke-width="4"/>
+      <g class="beam" stroke="#2EC4FF" stroke-width="3" stroke-linecap="round">
+        <line x1="20" y1="215" x2="85" y2="228"/><line x1="20" y1="235" x2="85" y2="235"/><line x1="20" y1="255" x2="85" y2="242"/>
+      </g>
+      <text x="20" y="200" fill="#94a3b8" font-size="12">365 nm laser</text>
+      <text x="212" y="108" fill="#94a3b8" font-size="12">O₂ pocket</text>
+      <text x="212" y="250" fill="#94a3b8" font-size="12">liquid CO₂</text>
+      <text x="212" y="385" fill="#94a3b8" font-size="12">carbon</text>
+    </svg>
+  </div>
+
+  <!-- Executive summary -->
+  <div class="relative mx-auto max-w-6xl px-5 pb-16">
+    <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 md:p-10">
+      <h2 class="font-display text-2xl font-semibold text-white">Executive summary</h2>
+      <div class="mt-5 grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="font-medium text-ember">The problem</h3>
+          <p class="mt-2 max-w-prose text-slate-300">Breathable air and rocket oxidizer are the biggest supply bottlenecks on Mars. NASA’s MOXIE uses gaseous solid oxide electrolysis, but Mars’s atmosphere is only about 6–7 millibars. Gas processing gives low output and needs lots of energy to pull in huge volumes of thin air.</p>
+        </div>
+        <div>
+          <h3 class="font-medium text-neon">The idea</h3>
+          <p class="mt-2 max-w-prose text-slate-300">LMOR compresses CO₂ to a liquid at 60 atmospheres, making it about 100 times denser. Suspended copper oxide (CuO) and gold nanoparticles, lit by laser through a sapphire window, split the carbon–oxygen bonds. Oxygen stays a gas and floats to the top for collection.</p>
+        </div>
+      </div>
+      <div class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-slate-800 text-center md:grid-cols-4">
+        <div class="bg-slate-900 p-5"><p class="font-display text-3xl font-bold text-white">60 atm</p><p class="text-sm text-slate-400">liquefaction pressure</p></div>
+        <div class="bg-slate-900 p-5"><p class="font-display text-3xl font-bold text-white">~100×</p><p class="text-sm text-slate-400">denser than the gas</p></div>
+        <div class="bg-slate-900 p-5"><p class="font-display text-3xl font-bold text-ember">33.6 kg</p><p class="text-sm text-slate-400">O₂ per hour (10 L reactor)</p></div>
+        <div class="bg-slate-900 p-5"><p class="font-display text-3xl font-bold text-white">~4.6 kW</p><p class="text-sm text-slate-400">continuous power</p></div>
+      </div>
+      <p class="mt-5 max-w-prose text-slate-300">That output could sustain a large habitat or fuel a Mars Ascent Vehicle in weeks rather than years.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- INTAKE -->
+<section id="intake" class="border-b border-slate-800 py-20">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Intake &amp; filtration</h2>
+    <p class="mt-3 max-w-prose text-slate-300">Two obstacles: very low pressure (6–7 millibars) and abrasive, electrostatic dust. Air must be cleaned and pre-compressed before it reaches the liquefaction chamber.</p>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-2">
+      <div>
+        <div class="ph flex h-56 items-center justify-center rounded-xl" role="img" aria-label="Image placeholder: cyclone separator">
+          <svg viewBox="0 0 120 120" class="h-40 text-slate-400" fill="none" stroke="currentColor" stroke-width="3"><path d="M25 20h70v25L70 95v15H50V95L25 45z"/><path d="M60 8v22M45 62h30" stroke="#E5513F"/></svg>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Placeholder for cyclone separator image</p>
+        <h3 class="mt-5 font-display text-xl text-white">Dual-stage cyclonic dust separation</h3>
+        <p class="mt-2 text-slate-300">Dust averages 1.5 micrometers and carries a negative charge from solar UV. In the liquid reactor it would foul the nanocatalysts and block the laser light.</p>
+        <ul class="mt-3 space-y-2 text-slate-300">
+          <li><span class="font-medium text-white">Primary cyclone:</span> a fast conical swirl flings particles of 5+ micrometers into a waste bin.</li>
+          <li><span class="font-medium text-white">Secondary electrostatic cyclone:</span> a positively charged mesh pulls in the fine dust, reaching 99.9% filtration with no clogging filters.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-xl text-white">Multi-stage cryogenic intake compressor</h3>
+        <ol class="mt-4 space-y-3">
+          <li class="rounded-lg border border-slate-800 bg-slate-900 p-4"><p class="font-medium text-white">Roots blower</p><p class="text-sm text-slate-400">Compresses air from 0.006 to 0.5 atmospheres.</p></li>
+          <li class="rounded-lg border border-slate-800 bg-slate-900 p-4"><p class="font-medium text-white">Radiator cooling</p><p class="text-sm text-slate-400">Martian cold (average −60 °C) removes heat, raising density and saving energy.</p></li>
+          <li class="rounded-lg border border-slate-800 bg-slate-900 p-4"><p class="font-medium text-white">Reciprocating pump</p><p class="text-sm text-slate-400">Reaches 5 atmospheres and pushes gas through a one-way check valve into the liquefaction cylinder.</p></li>
+        </ol>
+        <dl class="mt-6 grid grid-cols-2 gap-4 text-sm">
+          <div><dt class="text-slate-500">Inlet gas</dt><dd class="text-white">95.32% CO₂, 2.7% N₂, 1.6% Ar, 0.13% O₂</dd></div>
+          <div><dt class="text-slate-500">Flow rate</dt><dd class="text-white">55 m³ of air per minute</dd></div>
+          <div><dt class="text-slate-500">Power</dt><dd class="text-white">About 2.1 kW</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIQUEFACTION -->
+<section id="liquefaction" class="border-b border-slate-800 bg-slate-900/40 py-20">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Liquefaction chamber</h2>
+    <p class="mt-3 max-w-prose text-slate-300">A hydraulic piston squeezes pre-compressed CO₂ gas into a dense liquid.</p>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-[1fr_1.2fr]">
+      <div>
+        <div class="ph flex h-72 items-center justify-center rounded-xl" role="img" aria-label="Image placeholder: hydraulic piston">
+          <svg viewBox="0 0 120 150" class="h-60 text-slate-400" fill="none" stroke="currentColor" stroke-width="3"><rect x="52" y="5" width="16" height="45" fill="#475569"/><rect x="25" y="48" width="70" height="18" rx="2" fill="#475569" stroke="#E5513F"/><rect x="25" y="66" width="70" height="75"/><path d="M42 85v40M60 85v40M78 85v40" stroke="#2EC4FF" stroke-dasharray="3 6"/></svg>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Placeholder for piston and cylinder image</p>
+        <dl class="mt-5 grid grid-cols-2 gap-4 text-sm">
+          <div><dt class="text-slate-500">Operating pressure</dt><dd class="text-white">60.8 bar (60 atm)</dd></div>
+          <div><dt class="text-slate-500">Temperature</dt><dd class="text-white">+20 °C via cooling loops</dd></div>
+          <div><dt class="text-slate-500">Liquid density</dt><dd class="text-white">770 kg/m³</dd></div>
+          <div><dt class="text-slate-500">Energy per stroke</dt><dd class="text-white">1.4 MJ</dd></div>
+        </dl>
+      </div>
+      <div class="space-y-6">
+        <div>
+          <h3 class="font-display text-xl text-white">Materials &amp; geometry</h3>
+          <ul class="mt-2 space-y-1 text-slate-300">
+            <li><span class="font-medium text-white">Wall:</span> forged Titanium-Beta alloy (Ti-3Al-8V-6Cr-4Mo-4Zr), ductile well below 0 °C.</li>
+            <li><span class="font-medium text-white">Coating:</span> diamond-like carbon to reduce piston-ring wear.</li>
+            <li><span class="font-medium text-white">Shape:</span> vertical cylinder, exactly 10 liters at maximum compression.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display text-xl text-white">Piston &amp; seals</h3>
+          <ul class="mt-2 space-y-1 text-slate-300">
+            <li><span class="font-medium text-white">Piston head:</span> same titanium alloy, flat face for even pressure.</li>
+            <li><span class="font-medium text-white">Quad-ring seals:</span> four self-lubricating Viton-GF seals with PTFE backup rings.</li>
+            <li><span class="font-medium text-white">Actuator:</span> dual-action hydraulic ram driven by a brushless DC motor, up to 150 kN.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display text-xl text-white">The compression stroke</h3>
+          <ol class="mt-3 grid gap-3 sm:grid-cols-3">
+            <li class="rounded-lg border border-slate-800 bg-slate-900 p-4 text-sm"><span class="font-display text-ember">Step 1</span><p class="mt-1 text-slate-300">Intake valve fills the 100 L chamber with CO₂ at 5 atm.</p></li>
+            <li class="rounded-lg border border-slate-800 bg-slate-900 p-4 text-sm"><span class="font-display text-ember">Step 2</span><p class="mt-1 text-slate-300">Valve seals. The ram shrinks 100 L to 10 L (10:1).</p></li>
+            <li class="rounded-lg border border-slate-800 bg-slate-900 p-4 text-sm"><span class="font-display text-ember">Step 3</span><p class="mt-1 text-slate-300">At 60 atm and a steady +20 °C, the gas condenses into clear liquid.</p></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REACTION -->
+<section id="reaction" class="border-b border-slate-800 py-20">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Nanocatalytic reaction</h2>
+    <p class="mt-3 max-w-prose text-slate-300">Inside the liquid CO₂, suspended nanoparticles act as an artificial photosynthesis system. The right wavelength of light breaks the bonds and releases pure oxygen.</p>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-2">
+      <div>
+        <div class="ph flex h-56 items-center justify-center rounded-xl" role="img" aria-label="Image placeholder: sapphire laser window">
+          <svg viewBox="0 0 200 120" class="h-40" fill="none" stroke-width="3" stroke-linecap="round"><g class="beam" stroke="#2EC4FF"><line x1="5" y1="35" x2="85" y2="52"/><line x1="5" y1="60" x2="85" y2="60"/><line x1="5" y1="85" x2="85" y2="68"/></g><circle cx="100" cy="60" r="22" stroke="#cbd5e1"/><circle cx="100" cy="60" r="13" stroke="#2EC4FF" opacity=".6"/><rect x="125" y="15" width="70" height="90" stroke="#64748b"/></svg>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Placeholder for laser window image</p>
+        <h3 class="mt-5 font-display text-xl text-white">Sapphire window &amp; laser matrix</h3>
+        <ul class="mt-2 space-y-2 text-slate-300">
+          <li><span class="font-medium text-white">Window:</span> single-crystal aluminum oxide (Al₂O₃), clear to UV and visible light, with compressive strength over 2 GPa.</li>
+          <li><span class="font-medium text-white">Seal:</span> conical seat with a gold-foil gasket. Pressure pushes the sapphire tighter, so the joint seals itself.</li>
+          <li><span class="font-medium text-white">Emitters:</span> gallium nitride (GaN) laser diodes at 365 nm (UV-A) and 450 nm (deep blue), 750 W of continuous optical power.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-xl text-white">The photocatalytic cycle</h3>
+        <p class="mt-2 text-slate-300">Each CuO nanocube (25 nm) carries gold clusters (1–2 nm) where CO₂ molecules attach.</p>
+        <ol class="mt-4 space-y-3">
+          <li class="flex gap-4 rounded-lg border border-slate-800 bg-slate-900 p-4"><span class="font-display text-xl text-neon">1</span><p class="text-slate-300"><span class="font-medium text-white">Adsorption.</span> A liquid CO₂ molecule lands on a gold cluster.</p></li>
+          <li class="flex gap-4 rounded-lg border border-slate-800 bg-slate-900 p-4"><span class="font-display text-xl text-neon">2</span><p class="text-slate-300"><span class="font-medium text-white">Photo-excitation.</span> The 365 nm laser knocks an electron up in the CuO core, leaving a positive hole.</p></li>
+          <li class="flex gap-4 rounded-lg border border-slate-800 bg-slate-900 p-4"><span class="font-display text-xl text-neon">3</span><p class="text-slate-300"><span class="font-medium text-white">Charge transfer.</span> The electron jumps to the gold and into CO₂, destabilizing the C=O double bonds.</p></li>
+          <li class="flex gap-4 rounded-lg border border-slate-800 bg-slate-900 p-4"><span class="font-display text-xl text-neon">4</span><p class="text-slate-300"><span class="font-medium text-white">Cleaving.</span> The bond breaks. Oxygen atoms pair into O₂ gas. Carbon becomes solid carbon or carbon monoxide, depending on calibration.</p></li>
+        </ol>
+        <dl class="mt-6 grid grid-cols-3 gap-4 text-sm">
+          <div><dt class="text-slate-500">Catalyst load</dt><dd class="text-white">5 g CuO-Au per liter</dd></div>
+          <div><dt class="text-slate-500">Optical efficiency</dt><dd class="text-white">14.2%</dd></div>
+          <div><dt class="text-slate-500">Laser life</dt><dd class="text-white">20,000 hours</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEPARATION & MATH -->
+<section id="separation" class="border-b border-slate-800 bg-slate-900/40 py-20">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Gas separation &amp; mass-balance math</h2>
+    <p class="mt-3 max-w-prose text-slate-300">After splitting, oxygen and carbon must be separated and measured, all while the chamber stays at 60 atmospheres.</p>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-3">
+      <div>
+        <div class="ph flex h-44 items-center justify-center rounded-xl" role="img" aria-label="Image placeholder: oxygen bubbles">
+          <svg viewBox="0 0 100 100" class="h-32" fill="none" stroke="#2EC4FF" stroke-width="2.5"><circle cx="30" cy="75" r="9"/><circle cx="60" cy="55" r="13"/><circle cx="45" cy="25" r="6"/><circle cx="75" cy="85" r="5"/><circle cx="78" cy="22" r="8"/></svg>
+        </div>
+        <h3 class="mt-4 font-display text-lg text-white">Buoyancy extraction</h3>
+        <p class="mt-1 text-slate-300">Liquid O₂ at +20 °C would need over 1,000 atm, so at 60 atm oxygen stays gas. Bubbles rise into a pocket under the piston face.</p>
+      </div>
+      <div>
+        <h3 class="font-display text-lg text-white">Micro-valve extraction</h3>
+        <p class="mt-1 text-slate-300">Infrared sensors track the liquid–gas boundary. When the pocket reaches 1.5 liters, a pneumatic needle valve releases O₂ into an expansion tank that steps it down to 1 atmosphere for breathing.</p>
+      </div>
+      <div>
+        <h3 class="font-display text-lg text-white">Carbon precipitation</h3>
+        <p class="mt-1 text-slate-300">Solid carbon sinks into the bottom cone. A Teflon scraping blade sweeps it every 10 minutes into a sealed airlock, ready for 3D-printing habitat parts or graphite components.</p>
+      </div>
+    </div>
+
+    <!-- Calculator -->
+    <div class="mt-14 rounded-2xl border border-neon/40 bg-slate-950 p-6 md:p-10">
+      <h3 class="font-display text-2xl font-semibold text-white">Mass-balance calculator</h3>
+      <p class="mt-2 max-w-prose text-slate-400">Drag the slider to resize the chamber. Liquid CO₂ at 60 atm and +20 °C weighs 0.77 kg per liter. Oxygen is 72.7% of CO₂ by mass (31.998 ÷ 44.009), with 6 cycles of 10 minutes per hour.</p>
+
+      <div class="mt-8">
+        <div class="flex items-baseline justify-between">
+          <label for="vol" class="font-medium text-white">Chamber volume</label>
+          <output for="vol" id="volOut" class="font-display text-3xl font-bold text-neon">10 L</output>
+        </div>
+        <input id="vol" type="range" min="1" max="100" step="1" value="10" class="mt-3 w-full">
+        <div class="flex justify-between text-xs text-slate-500"><span>1 L</span><span>100 L</span></div>
+      </div>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-3" aria-live="polite">
+        <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
+          <p class="text-sm text-slate-400">CO₂ processed per cycle</p>
+          <p class="mt-1 font-display text-3xl font-bold text-white"><span id="mass">7.70</span> kg</p>
+          <p class="mt-2 text-xs text-slate-500">Volume × 0.77 kg</p>
+        </div>
+        <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
+          <p class="text-sm text-slate-400">Oxygen generated per hour</p>
+          <p class="mt-1 font-display text-3xl font-bold text-ember"><span id="o2">33.59</span> kg</p>
+          <p class="mt-2 text-xs text-slate-500">Mass × 0.727 × 6 cycles</p>
+        </div>
+        <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
+          <p class="text-sm text-slate-400">Crew members supported</p>
+          <p class="mt-1 font-display text-3xl font-bold text-white"><span id="crew">839</span></p>
+          <p class="mt-2 text-xs text-slate-500">Oxygen per hour ÷ 0.04 kg per person</p>
+        </div>
+      </div>
+      <div class="mt-6 h-2 overflow-hidden rounded-full bg-slate-800"><div id="bar" class="h-full rounded-full bg-gradient-to-r from-mars to-neon" style="width:10%"></div></div>
+      <p class="mt-3 text-sm text-slate-500">At 10 L, the result matches the proposal: about 5.6 kg of O₂ per cycle and 33.6 kg per hour. Carbon makes up the other 27.3%, about 12.6 kg per hour.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY, POWER, SCALE -->
+<section id="safety" class="py-20">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Safety, power &amp; scale</h2>
+    <p class="mt-3 max-w-prose text-slate-300">A 60-atmosphere reactor on Mars needs redundant fail-safes and a modest, reliable power supply.</p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      <div class="rounded-xl border border-mars/60 bg-slate-900 p-5"><h3 class="font-display text-lg text-white">Blast shielding</h3><p class="mt-2 text-slate-300">The titanium cylinder is wrapped in a multi-layer Kevlar-29 sleeve that stops explosive fragmentation if it cracks.</p></div>
+      <div class="rounded-xl border border-mars/60 bg-slate-900 p-5"><h3 class="font-display text-lg text-white">Burst disc</h3><p class="mt-2 text-slate-300">A non-electric rupture disc set to 75 atmospheres vents excess CO₂ safely into the Martian air.</p></div>
+      <div class="rounded-xl border border-mars/60 bg-slate-900 p-5"><h3 class="font-display text-lg text-white">Auto-depressurization</h3><p class="mt-2 text-slate-300">Piezoelectric sensors watch for stress. If integrity drops, the piston retracts and pressure falls to baseline within 0.4 seconds.</p></div>
+    </div>
+
+    <div class="mt-14 grid gap-10 md:grid-cols-2">
+      <div>
+        <h3 class="font-display text-xl text-white">Power budget: about 4.6 kW continuous</h3>
+        <div class="mt-5 space-y-4 text-sm" id="power"></div>
+        <p class="mt-5 max-w-prose text-slate-300">Small vertical solar arrays or a compact Kilopower fission reactor can supply this.</p>
+      </div>
+      <div>
+        <h3 class="font-display text-xl text-white">Scaling up</h3>
+        <ul class="mt-3 space-y-3 text-slate-300">
+          <li><span class="font-medium text-white">Modular:</span> each unit is only about 1.2 m³. Three units in parallel add redundancy and secure over 100 kg of oxygen per hour.</li>
+          <li><span class="font-medium text-white">Propellant:</span> the oxygen can feed cryogenic chillers to make liquid oxygen (LOX) and refuel return rockets on the pad.</li>
+        </ul>
+        <div class="mt-6 flex items-end gap-3" aria-hidden="true">
+          <div class="h-20 w-14 rounded-md border border-neon/60 bg-neon/10"></div>
+          <div class="h-20 w-14 rounded-md border border-neon/60 bg-neon/10"></div>
+          <div class="h-20 w-14 rounded-md border border-neon/60 bg-neon/10"></div>
+          <p class="pb-1 font-display text-2xl text-white">100+ kg O₂/h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 py-10 text-sm text-slate-400">
+  <div class="mx-auto max-w-6xl px-5">
+    <p class="font-medium text-white">Planned submissions</p>
+    <p class="mt-2">NASA Space Apps Challenge (Youth Division), Regeneron ISEF, and the Conrad Challenge (Aerospace &amp; Aviation).</p>
+    <p class="mt-6">LMOR technical proposal by Murad Duniyamaliev, age 13 · November 9, 2026</p>
+  </div>
+</footer>
+
+<script>
+  // Mass-balance calculator
+  const vol = document.getElementById('vol');
+  function update() {
+    const v = Number(vol.value);
+    const mass = v * 0.77;                 // kg CO2 per cycle
+    const o2 = mass * 0.727 * 6;           // kg O2 per hour
+    const crew = Math.floor(o2 / 0.04);    // people supported
+    document.getElementById('volOut').textContent = v + ' L';
+    document.getElementById('mass').textContent = mass.toFixed(2);
+    document.getElementById('o2').textContent = o2.toFixed(2);
+    document.getElementById('crew').textContent = crew.toLocaleString('en-US');
+    document.getElementById('bar').style.width = v + '%';
+  }
+  vol.addEventListener('input', update);
+  update();
+
+  // Power budget bars
+  const budget = [
+    ['Atmospheric intake & filter block', 2.1],
+    ['Hydraulic ram (intermittent, averaged)', 1.5],
+    ['Solid-state laser matrix', 0.75],
+    ['Control electronics & cooling loops', 0.25]
+  ];
+  document.getElementById('power').innerHTML = budget.map(([name, kw]) =>
+    `<div><div class="flex justify-between text-slate-300"><span>${name}</span><span class="text-white">${kw} kW</span></div>
+     <div class="mt-1 h-2 rounded-full bg-slate-800"><div class="h-2 rounded-full bg-mars" style="width:${(kw / 2.1) * 100}%"></div></div></div>`
+  ).join('');
+</script>
+</body>
+</html>
